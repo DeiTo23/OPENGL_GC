@@ -103,7 +103,7 @@ static void display(void)
 int main(int argc, char *argv[])
 {
     glutInit(&argc, argv);
-    glutInitWindowSize(600, 600);
+    glutInitWindowSize(800, 800);
     glutInitWindowPosition(10, 10);
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
     glutCreateWindow("PATRONES");
