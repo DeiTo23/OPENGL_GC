@@ -1,0 +1,78 @@
+#include <windows.h>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+#include <iostream>
+#include <stdlib.h>
+
+float negro[]={0,0,0}, blanco[]={1,1,1}, azul[]={0,0,1},rojo[]={1,0,0},verde[]={0,1,0};
+float amarillo[]={1,1,0}, cyan[]={0,1,1}, anaranjado[]={1,0.8,0}, rosa[]={1,0.5,0.5};
+float gris[]={0.5,0.5,0.5};
+
+//funcion para trabajar con mas valores en pantalla y no restringido a -1 a 1
+void pantalla()
+{
+    glMatrixMode(GL_PROJECTION);
+    int a=8;
+    gluOrtho2D(-a,a,-a,a);
+}
+
+void Recta(float *X0, float *X1, float *C, float A, int P)
+{
+       glColor3fv(C);
+       glLineWidth(A);
+glEnable(GL_LINE_STIPPLE);
+       switch (P)
+         {
+           case 1: glLineStipple (1, 0x0101); break;
+           case 2: glLineStipple (1, 0xAAAA); break;
+           case 3: glLineStipple (1, 0x00FF); break;
+           case 4: glLineStipple (1, 0x0c0F); break;
+           case 5: glLineStipple (1, 0x1C47); break;
+           default: glLineStipple (1, 0xFFFF); break;
+         }
+    glBegin(GL_LINES);
+       glVertex2fv(X0);
+       glVertex2fv(X1);
+    glEnd();
+glDisable(GL_LINE_STIPPLE);
+}
+
+void display(void)
+{
+    glClearColor(0.0,0.0,0.0,0.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+   float X0[]={-2,2}, X1[]={2,2};
+   float X2[]={-2,-2}, X3[]={2,-2};
+
+
+   Recta(X0,X1,rojo,3,1);
+   Recta(X1,X3,azul,3,1);
+   Recta(X3,X2,amarillo,3,1);
+   Recta(X2,X0,anaranjado,3,1);
+   Recta(X0,X3,amarillo,3,1);
+   Recta(X2,X1,anaranjado,3,1);
+
+
+    glutSwapBuffers();
+}
+
+//funcion principal, siempre es de esa manera
+int main(int argc, char *argv[])
+{
+
+    glutInit(&argc, argv);//Sirve para inicializar mi ventana de opengl
+    glutInitWindowPosition(0,0);//parte la ventana en 4 partes y en (0,0) esta en el centro,posicion de mi ventana
+    glutInitWindowSize(600,600);//tamaño de mi ventana tamaño normal (600,600)
+    glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE|GLUT_DEPTH);//tipo de modo de visualizacion de la ventana
+
+    glutCreateWindow("Primer programa");//Colocar el nombre que se le da a la ventana
+    glutDisplayFunc(display);//nombre de la función
+    pantalla();
+    //glClearColor(1,1,1,1);//color de la ventana negro
+    glutMainLoop();//hace que aparezca la ventana
+    return EXIT_SUCCESS; //tambien se puede usar el return
+}
