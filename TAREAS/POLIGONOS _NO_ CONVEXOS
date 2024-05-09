@@ -1,0 +1,113 @@
+#include <windows.h>
+#include <GL/glut.h>
+#include <iostream>
+#include <stdlib.h>
+#include <GL/glu.h> // Necesario para gluOrtho2D
+
+float green[] = {0.258, 0.721, 0.18}; // Color verde
+float orange[] = {0.925, 0.419, 0.192}; // Color naranja
+float magenta[] = {0.901, 0.09, 0.301}; // Color fucsia
+float yellow[] = {0.976, 0.854, 0.011}; // Color amarillo
+float pink[] = {0.8, 0.36, 0.592}; // Color rosa
+float cyan[] = {0.031, 0.69, 0.831}; // Color cyan
+float purple[] = {0.549, 0.270, 0.568}; // Color morado
+
+void inicio ()
+{
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity(); // Reiniciar la matriz de proyección
+    int a = 10;
+    gluOrtho2D(-a, a, -a, a);
+}
+
+void rellenopoligono(float face, float modo, float x, float y, float lado, float *color, int r)
+{
+    glPolygonMode(face, modo);
+    glColor3fv(color);
+
+    switch(r){
+        case 1:
+            glBegin(GL_POLYGON);
+            glVertex2f(x, y);
+            glVertex2f((x + (lado+1)/2), y - (lado/3));
+            glVertex2f(x + (lado+1), y );
+            glVertex2f(x + (lado+1), y - lado);
+            glVertex2f((x + (lado+1)/2), y- (lado+(lado/3)));
+            glVertex2f(x , y - lado);
+            break;
+        case 2:
+            glBegin(GL_TRIANGLE_STRIP);
+            glVertex2f(x + (lado+1), y );
+            glVertex2f(x + (lado+1), y - lado);
+            glVertex2f((x + (lado+1)/2), y - (lado/3));
+            glVertex2f((x + (lado+1)/2), y- (lado+(lado/3)));
+            glVertex2f(x, y);
+            glVertex2f(x , y - lado);
+            break;
+    }
+    glEnd();
+}
+
+void display1()
+{
+    glClearColor(0, 0, 0, 0); // Color de fondo de ventana
+    glClear(GL_COLOR_BUFFER_BIT);
+    rellenopoligono(GL_FRONT_AND_BACK, GL_POINT, -2,3, 3, cyan, 1);
+    glutSwapBuffers();
+}
+
+void display2()
+{
+    glClearColor(0, 0, 0, 0); // Color de fondo de ventana
+    glClear(GL_COLOR_BUFFER_BIT);
+    rellenopoligono(GL_FRONT_AND_BACK, GL_LINE, -2, 3, 3, pink,1);
+    glutSwapBuffers();
+}
+
+void display3()
+{
+    glClearColor(0, 0, 0, 0); // Color de fondo de ventana
+    glClear(GL_COLOR_BUFFER_BIT);
+    rellenopoligono(GL_FRONT_AND_BACK, GL_FILL, -2, 3, 3, orange,1);
+    glutSwapBuffers();
+}
+
+void display4()
+{
+    glClearColor(0, 0, 0, 0); // Color de fondo de ventana
+    glClear(GL_COLOR_BUFFER_BIT);
+    rellenopoligono(GL_FRONT_AND_BACK, GL_LINE, -2, 3, 3, orange,2);
+    glutSwapBuffers();
+}
+
+void display5()
+{
+    glClearColor(0, 0, 0, 0); // Color de fondo de ventana
+    glClear(GL_COLOR_BUFFER_BIT);
+    rellenopoligono(GL_FRONT_AND_BACK, GL_FILL, -2, 3, 3, orange,2);
+    glutSwapBuffers();
+}
+
+void ventana(const char* name, int a, int l, float *color, void (*pantalla)())
+{
+    glutInitWindowPosition(a, l); // Posicion de la ventana
+    glutInitWindowSize(400, 400); // Tamaño de la ventana
+    glutCreateWindow(name); // Nombre que se le da a la ventana
+    glutDisplayFunc(pantalla); // Nombre de la funcion
+    inicio();
+}
+
+int main(int argc, char *argv[])
+{
+    glutInit(&argc, argv); // Inicializar la ventana de OpenGL
+    glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE|GLUT_DEPTH); // Especifica el tipo de modo de visualizacion al crear una ventana (Activa el buffer de colores de tipo RGB)
+
+    ventana("ventana 1", 0, 0, green, display1);
+    ventana("ventana 2", 400, 0, orange, display2);
+    ventana("ventana 3", 800, 0, magenta, display3);
+    ventana("ventana 4", 0, 400, pink, display4);
+    ventana("ventana 5", 400, 400, yellow, display5);
+
+    glutMainLoop(); // Hace que aparezca la ventana
+    return EXIT_SUCCESS; // Puedes colocar tambien return 0
+}
