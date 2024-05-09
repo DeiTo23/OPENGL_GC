@@ -77,7 +77,7 @@ void display(){
 void ventana(){
     glutInitWindowPosition(0,0); //posicion de la ventana
     glutInitWindowSize(400,400); //tamaño de la ventana
-    glutCreateWindow("MODOS"); //Nombre que se le da a la ventana
+    glutCreateWindow("TABLERO AJEDREZ"); //Nombre que se le da a la ventana
     glColor3f(0,0,1);
     glutDisplayFunc(display); //nombre de la funcion
     inicio();
