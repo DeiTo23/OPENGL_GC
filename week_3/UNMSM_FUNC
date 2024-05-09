@@ -1,0 +1,85 @@
+#include <windows.h>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+#include <iostream>
+#include <stdlib.h>
+
+float negro[]={0,0,0}, blanco[]={1,1,1}, azul[]={0,0,1},rojo[]={1,0,0},verde[]={0,1,0};
+float amarillo[]={1,1,0}, cyan[]={0,1,1}, anaranjado[]={1,0.8,0}, rosa[]={1,0.5,0.5};
+float gris[]={0.5,0.5,0.5};
+
+//funcion para trabajar con mas valores en pantalla y no restringido a -1 a 1
+void pantalla()
+{
+    glMatrixMode(GL_PROJECTION);
+    int a=15;
+    gluOrtho2D(-a,a,-a,a);
+}
+
+void displaypatron (GLshort patron,float ix,float iy,float fx,float fy)
+{
+    glEnable(GL_LINE_STIPPLE);
+    glLineStipple(1,patron);
+    glBegin(GL_LINES);
+    glVertex2f(ix,iy);
+    glVertex2f(fx,fy);
+    glEnd();
+    glDisable(GL_LINE_STIPPLE);
+}
+
+void display(void)
+{
+    glClearColor(0.0,0.0,0.0,0.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLineWidth(5);
+    //letra U
+    glColor3f(1,0,0);
+    displaypatron(0x0101,-9,5,-9,0);
+    displaypatron(0x0101,-9,0,-6,0);
+    displaypatron(0x0101,-6,0,-6,5);
+    //letra N
+    glColor3f(0,1,0);
+    displaypatron(0xAAAA,-5,0,-5,5);
+    displaypatron(0xAAAA,-5,5,-2,0);
+    displaypatron(0xAAAA,-2,0,-2,5);
+    //letra M
+    glColor3f(0,0,1);
+    displaypatron(0x00FF,-1,0,-1,5);
+    displaypatron(0x00FF,-1,5,0.5,3);
+    displaypatron(0x00FF,0.5,3,2,5);
+    displaypatron(0x00FF,2,5,2,0);
+    //letra S
+    glColor3f(1,1,0);
+    displaypatron(0x0C0F,3,0,6,0);
+    displaypatron(0x0C0F,6,0,6,3);
+    displaypatron(0x0C0F,6,3,3,3);
+    displaypatron(0x0C0F,3,3,3,5);
+    displaypatron(0x0C0F,3,5,6,5);
+    //letra M
+    glColor3f(1,0,1);
+    displaypatron(0x1C47,7,0,7,5);
+    displaypatron(0x1C47,7,5,8.5,3);
+    displaypatron(0x1C47,8.5,3,10,5);
+    displaypatron(0x1C47,10,5,10,0);
+    glutSwapBuffers();
+}
+
+//funcion principal, siempre es de esa manera
+int main(int argc, char *argv[])
+{
+
+    glutInit(&argc, argv);//Sirve para inicializar mi ventana de opengl
+    glutInitWindowPosition(0,0);//parte la ventana en 4 partes y en (0,0) esta en el centro,posicion de mi ventana
+    glutInitWindowSize(600,600);//tamaño de mi ventana tamaño normal (600,600)
+    glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE|GLUT_DEPTH);//tipo de modo de visualizacion de la ventana
+
+    glutCreateWindow("Primer programa");//Colocar el nombre que se le da a la ventana
+    glutDisplayFunc(display);//nombre de la función
+    pantalla();
+    //glClearColor(1,1,1,1);//color de la ventana negro
+    glutMainLoop();//hace que aparezca la ventana
+    return EXIT_SUCCESS; //tambien se puede usar el return
+}
