@@ -1,0 +1,94 @@
+#include<windows.h>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+#include <iostream>
+#include <stdlib.h>
+float red[]={1,0,0}, yellow[]={1,1,0}, pink[]={1,0,1};
+void inicio ()
+{
+    glMatrixMode(GL_PROJECTION);
+    int a=18;
+    gluOrtho2D(-a,a,-a,a);
+}
+void linea(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2, GLfloat R, GLfloat G, GLfloat B)
+{
+    /**
+    Retorna una segmento desde un punto inicial y final
+    Parámetros:
+    --------
+    x1, y1: valores del primer punto.
+    x2, y2: valores del segundo punto
+    R, G, B: valores para el color de la linea
+    **/
+    glLineWidth(3.0);
+    glBegin(GL_LINES);
+    glColor3f(R,G,B);
+    glVertex2d(x1, y1);
+    glVertex2d(x2, y2);
+    glEnd();
+}
+
+void fill_cuadrado(GLfloat x, GLfloat y, GLfloat d, GLfloat R, GLfloat G, GLfloat B)
+{
+    /**
+    Retorna un cuadrado pintado, depende del RGB que asignes
+    Parámetros:
+    --------
+    x,y: son puntos para el cuadrado
+    d: tamaño de los lados del cuadrado
+    R, G, B: valores para el color de la linea
+    **/
+    glBegin(GL_POLYGON);
+    glColor3f(R,G,B);
+    glVertex2f(x,y); glVertex2f(x+d,y);
+    glVertex2f(x+d,y-d); glVertex2f(x,y-d);
+    glEnd();
+}
+void display(){
+    glClearColor(0,0,0,0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    for(int i=0;i<4; i++)
+   {
+       for(int j=0;j<8;j++)
+       {
+           if(j%2==0)
+           {
+               fill_cuadrado(-16+4*j, 16-8*i, 4, 1,0,0);
+               fill_cuadrado(-12+4*j, 12-8*i, 4, 1,0,0);
+           }
+           else
+           {
+               fill_cuadrado(-16+4*j, 16-8*i, 4, 0,0,0);
+               fill_cuadrado(-20+4*j, 12-8*i, 4, 0,0,0);
+           }
+       }
+   }
+
+   for(int j=0; j<9; j++)
+   {
+       linea(-16+4*j,-16, -16+4*j,16, 23.0f/255.0f,255.0f/255.0f,251.0f/255.0f); //vertical
+       linea(-16,-16+4*j, 16,-16+4*j, 0,0,1); //horizontal
+    }
+    glutSwapBuffers();
+}
+void ventana(){
+    glutInitWindowPosition(0,0); //posicion de la ventana
+    glutInitWindowSize(400,400); //tamaño de la ventana
+    glutCreateWindow("MODOS"); //Nombre que se le da a la ventana
+    glColor3f(0,0,1);
+    glutDisplayFunc(display); //nombre de la funcion
+    inicio();
+}
+
+int main(int argc, char *argv[])
+{
+   glutInit(&argc, argv); // Inicializar la ventana de Opengl
+   glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE|GLUT_DEPTH); //Especifica el tipo de modo de visualizacion al crear una ventana (Activa el buffer de colores de tipo RGB)
+   ventana();
+   glutMainLoop(); //Hace que aperezca la ventana
+   return EXIT_SUCCESS; // Puedes colocar tambien return 0
+
+}
