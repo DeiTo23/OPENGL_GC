@@ -1,0 +1,66 @@
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+#include <stdlib.h>
+#include <windows.h>
+#include <cmath>
+#define pi 3.1416
+float green[] = {0.258, 0.721, 0.18}, orange[] = {0.925, 0.419, 0.192}, magenta[] = {0.901, 0.09, 0.301};
+float yellow[] = {0.976, 0.854, 0.011}, pink[] = {0.8, 0.36, 0.592}, cyan[] = {0.031, 0.69, 0.831};
+float purple[] = {0.549, 0.270, 0.568}, black[] = {0, 0, 0}, red[]={1,0,0}, blue[] ={0,0,1};
+
+void escala(){
+    glMatrixMode(GL_PROJECTION);
+    int a =10;
+    gluOrtho2D(-a,a,-a,a);
+    }
+void circulo(float modo){
+    glPointSize(2);
+    glBegin(modo);
+    for (float theta=0;theta<2*pi;theta=theta+0.1){
+        glVertex2d(5*cos(theta),5*sin(theta));
+    }
+    glEnd();
+}
+void display(GLenum modo){
+    glClearColor(1,1,1,1);
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    circulo(modo);
+    glutSwapBuffers();
+}
+void display1() {
+    display(GL_POINTS);
+}
+void display2() {
+    display(GL_LINES);
+}
+void display3() {
+    display(GL_LINE_STRIP);
+}
+void display4() {
+    display(GL_LINE_LOOP);
+}
+void display5() {
+    display(GL_POLYGON);
+}
+void ventana(int a, int l,void (*obs)(), float *color){
+    glutInitWindowPosition(a,l);
+    glutInitWindowSize(400,400);
+    glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE|GLUT_DEPTH);
+    glutCreateWindow("Primitivas III");
+    glColor3f(color[0],color[1],color[2]);
+    glutDisplayFunc(obs);
+    escala();
+}
+int main(int argc, char *argv[]){
+    glutInit(&argc,argv);
+    ventana(0,0,display1,pink);
+    ventana(400,0,display2,red);
+    ventana(800,0,display3,blue);
+    ventana(0,400,display4,green);
+    ventana(400,400,display5,yellow);
+    glutMainLoop();
+    return EXIT_SUCCESS;
+}
