@@ -1,0 +1,51 @@
+#include<windows.h>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+#include <iostream>
+#include <stdlib.h>
+float red[]={1,0,0}, yellow[]={1,1,0}, pink[]={1,0,1};
+void inicio ()
+{
+    glMatrixMode(GL_PROJECTION);
+    int a=10;
+    gluOrtho2D(-a,a,-a,a);
+}
+void cuadrado(float x, float y, float lado, float *color){//funcion creacion cuadrado
+    glBegin(GL_QUADS);
+    glColor3fv(color);//puntero para el color
+    glVertex2d(x,y);
+    glVertex2d(x,y-lado);
+    glVertex2d(x+lado,y-lado);
+    glVertex2d(x+lado,y);
+    glEnd();
+
+}
+void display(){
+    glClearColor(0,0,0,0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    cuadrado(-3,3,3,red);
+    cuadrado(1,3,3,yellow);
+    cuadrado(5,3,3,pink);
+    glutSwapBuffers();
+}
+void ventana(){
+    glutInitWindowPosition(0,0); //posicion de la ventana
+    glutInitWindowSize(400,400); //tamaño de la ventana
+    glutCreateWindow("MODOS"); //Nombre que se le da a la ventana
+    glColor3f(0,0,1);
+    glutDisplayFunc(display); //nombre de la funcion
+    inicio();
+}
+
+int main(int argc, char *argv[])
+{
+   glutInit(&argc, argv); // Inicializar la ventana de Opengl
+   glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE|GLUT_DEPTH); //Especifica el tipo de modo de visualizacion al crear una ventana (Activa el buffer de colores de tipo RGB)
+   ventana();
+   glutMainLoop(); //Hace que aperezca la ventana
+   return EXIT_SUCCESS; // Puedes colocar tambien return 0
+
+}
