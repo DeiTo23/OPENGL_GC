@@ -1,0 +1,94 @@
+#include<windows.h>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+#include <iostream>
+#include <stdlib.h>
+
+void inicio ()
+{
+    glMatrixMode(GL_PROJECTION);
+    int a=10;
+    gluOrtho2D(-a,a,-a,a);
+}
+void display(){
+    glClearColor(0,0,0,0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glPointSize(3); // funciona para incremetar el tamaño del punto
+    glColor3f(0,1,0);// color
+    glBegin(GL_POINTS);// modo punto
+    glVertex2f(-9,9);//ubicacion 1 punto
+    glVertex2f(-7,9);//ubicacion 2 punto
+    glVertex2f(-7,7);
+    glVertex2f(-9,7);
+        glEnd();
+
+    glLineWidth(3);// funciona para incremetar el ancho de la linea
+    glBegin(GL_LINES);//modo lineas
+    glVertex2f(-6,9);
+    glVertex2f(-4,9);
+    glVertex2f(-4,7);
+    glVertex2f(-6,7);
+    glEnd();
+
+    glLineWidth(3);
+    glBegin(GL_LINE_STRIP);
+    glVertex2f(-3,9);
+    glVertex2f(-1,9);
+    glVertex2f(-1,7);
+    glVertex2f(-3,7);
+    glEnd();
+
+    glLineWidth(3);
+    glBegin(GL_LINE_LOOP);
+    glVertex2f(0,9);
+    glVertex2f(2,9);
+    glVertex2f(2,7);
+    glVertex2f(0,7);
+    glEnd();
+
+    glLineWidth(3);
+    glBegin(GL_TRIANGLES); //triangulo
+    glVertex2f(3,9);
+    glVertex2f(5,9);
+    glVertex2f(4,7);
+    glEnd();
+
+    glLineWidth(3);
+    glBegin(GL_QUADS); //cuadrilatero
+    glVertex2f(6,9);
+    glVertex2f(8,9);
+    glVertex2f(8,7);
+    glVertex2f(6,7);
+    glEnd();
+
+    glLineWidth(3);
+    glBegin(GL_POLYGON); //poligono
+    glVertex2f(-9,5);
+    glVertex2f(-8,6);
+    glVertex2f(-7,5);
+    glVertex2f(-7,4);
+    glVertex2f(-9,4);
+    glEnd();
+    glutSwapBuffers();
+}
+void ventana(){
+    glutInitWindowPosition(0,0); //posicion de la ventana
+    glutInitWindowSize(400,400); //tamaño de la ventana
+    glutCreateWindow("MODOS"); //Nombre que se le da a la ventana
+    glColor3f(0,0,1);
+    glutDisplayFunc(display); //nombre de la funcion
+    inicio();
+}
+
+int main(int argc, char *argv[])
+{
+   glutInit(&argc, argv); // Inicializar la ventana de Opengl
+   glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE|GLUT_DEPTH); //Especifica el tipo de modo de visualizacion al crear una ventana (Activa el buffer de colores de tipo RGB)
+   ventana();
+   glutMainLoop(); //Hace que aperezca la ventana
+   return EXIT_SUCCESS; // Puedes colocar tambien return 0
+
+}
