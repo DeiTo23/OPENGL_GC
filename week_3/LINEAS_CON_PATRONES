@@ -1,0 +1,64 @@
+#include<windows.h>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+#include <iostream>
+#include <stdlib.h>
+float negro[]={0,0,0}, blanco[]={1,1,1}, azul[]={0,0,1},rojo[]={1,0,0},verde[]={0,1,0};
+float amarillo[]={1,1,0}, cyan[]={0,1,1}, anaranjado[]={1,0.8,0}, rosa[]={1,0.5,0.5};
+float gris[]={0.5,0.5,0.5};
+float puntos[]={0x0101};
+void inicio ()
+{
+    glMatrixMode(GL_PROJECTION);
+    int a=8;
+    gluOrtho2D(-a,a,-a,a);
+}
+void patron ( float x, float y, float x1,float y1,int forma,float *color)
+{
+    glColor3fv(color);
+    glEnable(GL_LINE_STIPPLE);
+    switch (forma){
+    case 1:glLineStipple(1,0x0101);break;
+    case 2:glLineStipple(1,0xAAAA);break;
+    case 3:glLineStipple(1,0x00FF);break;
+    case 4:glLineStipple(1,0x0C0F);break;
+    case 5:glLineStipple(1,0x1C47);break;
+    }
+    glBegin(GL_LINES);
+    glVertex2d(x,y);
+    glVertex2d(x1,y1);
+    glEnd();
+    glDisable(GL_LINE_STIPPLE);
+}
+void display(){
+
+    patron(-4,4,4,4,1,anaranjado);
+    patron(-4,3,4,3,2,anaranjado);
+    patron(-4,2,4,2,3,anaranjado);
+    patron(-4,1,4,1,4,anaranjado);
+    patron(-4,0,4,0,5,anaranjado);
+    patron(-4,-1,4,-1,6,anaranjado);
+    glutSwapBuffers();
+
+}
+void ventana(){
+    glutInitWindowPosition(0,0); //posicion de la ventana
+    glutInitWindowSize(400,400); //tamaño de la ventana
+    glutCreateWindow("MODOS"); //Nombre que se le da a la ventana
+    glColor3f(0,0,1);
+    glutDisplayFunc(display); //nombre de la funcion
+    inicio();
+}
+
+int main(int argc, char *argv[])
+{
+   glutInit(&argc, argv); // Inicializar la ventana de Opengl
+   glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE|GLUT_DEPTH); //Especifica el tipo de modo de visualizacion al crear una ventana (Activa el buffer de colores de tipo RGB)
+   ventana();
+   glutMainLoop(); //Hace que aperezca la ventana
+   return EXIT_SUCCESS; // Puedes colocar tambien return 0
+
+}
