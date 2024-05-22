@@ -1,0 +1,68 @@
+#include <windows.h>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+#include <iostream>
+#include <stdlib.h>
+#include <cmath>
+
+float negro[] = {0, 0, 0}, blanco[] = {1, 1, 1}, azul[] = {0, 0, 1}, rojo[] = {1, 0, 0};
+float verde[] = {0, 1, 0}, amarillo[] = {1, 1, 0}, cyan[] = {0, 1, 1}, anaranjado[] = {1, 0.8, 0};
+float rosa[] = {1, 0.5, 0.5}, gris[] = {0.5, 0.5, 0.5}, verdeo[]={ 0.13,0.69,0.29};
+
+void pantalla() {
+  glMatrixMode(GL_PROJECTION);
+  int a = 18;
+  gluOrtho2D(-a, a, -a, a);
+}
+
+void circulo(float x, float y, float angle_i, float angle_f, float r, float *color) {
+  glBegin(GL_POLYGON);
+  glColor3fv(color);
+  glVertex2f(x, y);
+
+  for (float theta = angle_i; theta >= -angle_f; theta -= 0.01) {
+    glVertex2f(r * cos(theta) + x, r * sin(theta) + y);
+  }
+
+  glEnd();
+}
+void display(void) {
+  glClearColor(0.0, 0.0, 0.0, 0.0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  /**Cuerpo del PACMAN**/
+  circulo(-10, 0, (3 * M_PI / 2 + 1.0472), -0.52, 5, amarillo);
+
+  /** Ojo del PACMAN**/
+  circulo(-9, 2.5, (2 * M_PI), 0, 0.7, negro);
+
+  /**Comida del PACMAN**/
+  for (int i = 0; i < 3; i++) {
+    circulo(i * 7, 0, (2 * M_PI), 2, 2.5, verde);
+
+    for (float angle = 0; angle < 2 * M_PI; angle += M_PI / 4) {
+      float x_offset = 2.5 * cos(angle);
+      float y_offset = 2.5 * sin(angle);
+      circulo(i * 7 + x_offset, y_offset, (2 * M_PI), 2, 0.5, verdeo);
+    }
+  }
+
+  glutSwapBuffers();
+}
+
+int main(int argc, char *argv[]) {
+  glutInit(&argc, argv);
+  glutInitWindowPosition(0, 0);
+  glutInitWindowSize(800, 800);
+  glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
+  glutCreateWindow(":v come virus");
+  glutDisplayFunc(display);
+  pantalla();
+  glClearColor(1, 1, 1, 1);
+  glutMainLoop();
+
+  return EXIT_SUCCESS;
+}
